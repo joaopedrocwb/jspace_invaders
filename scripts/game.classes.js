@@ -69,12 +69,20 @@ var GameShot = new Class({
             "left": position[0],
             "top": position[1]
         });
-        this.object.morph({
+        var morph = new Fx.Steppable(this.object, {
+            "transition": "linear",
+            "duration": 1000,
+            "onComplete": this.destroy.bind(this),
+            "onStep": function() {
+                
+            }
+        });
+        morph.start({
             "top": 0
         });
     },
     "destroy": function() {
-        this.object.destroy()
+        this.object.destroy();
     }
 });
 
@@ -82,5 +90,13 @@ var GameEnemy = new Class({
     "Extends": GameObject,
     "initialize": function() {
         this.parent("enemy");
+    }
+});
+
+Fx.Steppable = new Class({
+    "Extends": Fx.Morph,
+    "step": function() {
+        this.parent();
+        this.fireEvent("step");
     }
 });
