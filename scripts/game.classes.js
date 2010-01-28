@@ -56,33 +56,36 @@ var GameShot = new Class({
     "Extends": GameObject,
     "initialize": function() {
         this.parent("shot");
-
-        // setting animation things
-        this.object.set("morph", {
-            "transition": "linear",
-            "duration": 1000,
-            "onComplete": this.destroy.bind(this)
-        });
     },
     "fire": function(position, direction) {
         this.object.setStyles({
             "left": position[0],
             "top": position[1]
         });
-        var morph = new Fx.Steppable(this.object, {
+        if(direction == "top") {
+            var properties = {
+                "top": 0
+            }
+        }
+        else {
+            var properties = {
+                "bottom": 0
+            }
+        }
+        new Fx.Steppable(this.object, {
             "transition": "linear",
             "duration": 1000,
             "onComplete": this.destroy.bind(this),
-            "onStep": function() {
-                
-            }
-        });
-        morph.start({
+            "onStep": this.step.bind(this)
+        }).start({
             "top": 0
         });
     },
     "destroy": function() {
         this.object.destroy();
+    },
+    "step": function() {
+        // check collision
     }
 });
 
@@ -96,7 +99,7 @@ var GameEnemy = new Class({
 Fx.Steppable = new Class({
     "Extends": Fx.Morph,
     "step": function() {
-        this.parent();
         this.fireEvent("step");
+        this.parent();
     }
 });
