@@ -27,9 +27,10 @@ var GamePlayer = new Class({
         var position = this.left + direction * 34;
         if(this.canMoveTo(position)) {
             this.left = position;
-            this.object.morph({
-                "left":  this.left
-            });
+            //this.object.morph({
+            //    "left":  this.left
+            //});
+            this.object.setStyle("left", this.left + "px")
         }
     },
     "canMoveTo": function(position) {
@@ -69,7 +70,8 @@ var GameShot = new Class({
             "transition": "linear",
             "duration": 1000,
             "onComplete": this.destroy.bind(this),
-            "onStep": this.step.bind(this)
+            "onStep": this.step.bind(this),
+            "fps": 20
         }).start(properties);
     },
     "destroy": function() {
@@ -84,13 +86,5 @@ var GameEnemy = new Class({
     "Extends": GameObject,
     "initialize": function() {
         this.parent("enemy");
-    }
-});
-
-Fx.Steppable = new Class({
-    "Extends": Fx.Morph,
-    "step": function() {
-        this.fireEvent("step");
-        this.parent();
     }
 });
