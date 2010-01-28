@@ -62,24 +62,15 @@ var GameShot = new Class({
             "left": position[0],
             "top": position[1]
         });
-        if(direction == "top") {
-            var properties = {
-                "top": 0
-            }
-        }
-        else {
-            var properties = {
-                "bottom": 0
-            }
+        var properties = {
+            "top": direction == "top" ? 0 : 465
         }
         new Fx.Steppable(this.object, {
             "transition": "linear",
             "duration": 1000,
             "onComplete": this.destroy.bind(this),
             "onStep": this.step.bind(this)
-        }).start({
-            "top": 0
-        });
+        }).start(properties);
     },
     "destroy": function() {
         this.object.destroy();
