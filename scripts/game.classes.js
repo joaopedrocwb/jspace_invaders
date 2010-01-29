@@ -4,6 +4,16 @@ var GameObject = new Class({
             "class": type
         });
         this.object.inject("stage");
+        GameCollision.add(this.position());
+    },
+    "position": function() {
+        var rect = this.object.getCoordinates("stage");
+        return this.rect = {
+            "h": rect.height,
+            "w": rect.width,
+            "x": rect.left,
+            "y": rect.top
+        };
     }
 });
 
@@ -12,33 +22,22 @@ var GamePlayer = new Class({
     "initialize": function() {
         this.parent("player");
         
-        // setting animation things
-        this.left = this.object.getCoordinates("stage").left.toInt();
-        this.object.set("morph", {
-            "duration": 50,
-            "link": "chain",
-            "transition": "linear"
-        });
-        
         // bind the onKeyDown event to this.respondToKey
         document.addEvent("keydown", this.respondToKey.bind(this));
     },
     "move": function(direction) {
-        var position = this.left + direction * 34;
+        var position = this.rect.x + direction * 34;
         if(this.canMoveTo(position)) {
-            this.left = position;
-            //this.object.morph({
-            //    "left":  this.left
-            //});
-            this.object.setStyle("left", this.left + "px")
+            GameCollision.update(this.rect);
+            this.rect.x = position;
+            this.object.setStyle("left", this.rect.x + "px");
         }
     },
     "canMoveTo": function(position) {
         return position >= 0 && position <= 642 - 30;
     },
     "fire": function() {
-        var coords = this.object.getCoordinates("stage");
-        new GameShot().fire([this.left + 13, coords.top.toInt() - 20], "top");
+        new GameShot().fire([this.rect.x + 13, this.rect.y - 20], "top");
     },
     "respondToKey": function(e) {
         switch(e.key) {
@@ -63,9 +62,10 @@ var GameShot = new Class({
             "left": position[0],
             "top": position[1]
         });
+        this.position();
         var properties = {
             "top": direction == "top" ? 0 : 465
-        }
+        };
         new Fx.Steppable(this.object, {
             "transition": "linear",
             "duration": 1000,
@@ -77,8 +77,9 @@ var GameShot = new Class({
     "destroy": function() {
         this.object.destroy();
     },
-    "step": function() {
-        // check collision
+    "step": function(position) {
+        this.rect.y = Math.round(position.top[0].value);
+        GameCollision.update(this.coords);
     }
 });
 
@@ -88,3 +89,9 @@ var GameEnemy = new Class({
         this.parent("enemy");
     }
 });
+
+// stub
+var GameCollision = {
+    add: function(){},
+    update: function(){}
+}
