@@ -62,24 +62,24 @@ var GameShot = new Class({
             "left": position[0],
             "top": position[1]
         });
-        this.position();
-        var properties = {
-            "top": direction == "top" ? 0 : 465
-        };
+        this.rect.x = position[0];
+        this.rect.y = position[1];
         new Fx.Steppable(this.object, {
             "transition": "linear",
             "duration": 1000,
             "onComplete": this.destroy.bind(this),
             "onStep": this.step.bind(this),
             "fps": 20
-        }).start(properties);
+        }).start({
+            "top": direction == "top" ? 0 : 465
+        });
     },
     "destroy": function() {
         this.object.destroy();
     },
     "step": function(position) {
         this.rect.y = Math.round(position.top[0].value);
-        GameCollision.update(this.coords);
+        GameCollision.update(this.rect);
     }
 });
 
