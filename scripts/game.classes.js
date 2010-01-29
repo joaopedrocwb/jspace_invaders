@@ -1,8 +1,8 @@
 var GameObject = new Class({
-    "initialize": function(type) {
-        this.object = new Element("div", {
-            "class": type
-        });
+    "initialize": function(type, options) {
+        options = options || {};
+        options.class = type;
+        this.object = new Element("div", options);
         this.object.inject("stage");
         this.rect = this.position();
         GameCollision.add(this);
@@ -35,7 +35,10 @@ var GamePlayer = new Class({
         return position >= 0 && position <= 642 - 30;
     },
     "fire": function() {
-        new GameShot().fire([this.rect.x + 13, this.rect.y - 20], "top");
+        new GameShot({
+            "top": this.rect.y - 20,
+            "left": this.rect.x + 13
+        }).fire("top");
     },
     "respondToKey": function(e) {
         switch(e.key) {
@@ -52,24 +55,12 @@ var GamePlayer = new Class({
 
 var GameShot = new Class({
     "Extends": GameObject,
-    "initialize": function() {
-        var type = "shot";
-        this.object = new Element("div", {
-            "class": type
+    "initialize": function(styles, direction) {
+        this.parent("shot", {
+            "styles": styles
         });
-        this.object.inject("stage");
     },
-    "fire": function(position, direction) {
-        this.object.setStyles({
-            "left": position[0],
-            "top": position[1]
-        });
-        this.rect = this.position();
-        GameCollision.add(this);
-
-
-        this.rect.x = position[0];
-        this.rect.y = position[1];
+    "fire": function(direction) {
         new Fx.Steppable(this.object, {
             "transition": "linear",
             "duration": 1000,
@@ -82,10 +73,10 @@ var GameShot = new Class({
     },
     "destroy": function() {
         this.object.destroy();
+        GameCollision.remove(this);
     },
     "collide": function() {
         this.destroy();
-        GameCollision.remove(this);
     },
     "step": function(position) {
         this.rect.y = Math.round(position.top[0].value);
@@ -97,8 +88,10 @@ var GameEnemy = new Class({
     "initialize": function() {
         this.parent("enemy");
     },
+    "destroy": function() {
+        GameCollision.remove(this);
+    },
     "collide": function() {
         this.object.destroy();
-        GameCollision.remove(this);
     }
 });
