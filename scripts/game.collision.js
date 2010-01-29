@@ -53,10 +53,10 @@
 					this.settings.globalEvent.call(window,test,curr);
 				}
 				if(typeof test[this.settings.objectEvent] == "function") {
-					test[this.settings.objectEvent].call(this,curr);
+					test[this.settings.objectEvent].call(test,curr);
 				}
 				if(typeof curr[this.settings.objectEvent] == "function") {
-					curr[this.settings.objectEvent].call(this,curr);
+					curr[this.settings.objectEvent].call(curr,test);
 				}
 			}
 		}

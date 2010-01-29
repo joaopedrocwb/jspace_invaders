@@ -29,7 +29,6 @@ var GamePlayer = new Class({
         if(this.canMoveTo(position)) {
             this.rect.x = position;
             this.object.setStyle("left", this.rect.x + "px");
-            GameCollision.update(this);
         }
     },
     "canMoveTo": function(position) {
@@ -54,13 +53,21 @@ var GamePlayer = new Class({
 var GameShot = new Class({
     "Extends": GameObject,
     "initialize": function() {
-        this.parent("shot");
+        var type = "shot";
+        this.object = new Element("div", {
+            "class": type
+        });
+        this.object.inject("stage");
     },
     "fire": function(position, direction) {
         this.object.setStyles({
             "left": position[0],
             "top": position[1]
         });
+        this.rect = this.position();
+        GameCollision.add(this);
+
+
         this.rect.x = position[0];
         this.rect.y = position[1];
         new Fx.Steppable(this.object, {
@@ -68,7 +75,7 @@ var GameShot = new Class({
             "duration": 1000,
             "onComplete": this.destroy.bind(this),
             "onStep": this.step.bind(this),
-            "fps": 20
+            "fps": 25
         }).start({
             "top": direction == "top" ? 0 : 465
         });
@@ -76,9 +83,12 @@ var GameShot = new Class({
     "destroy": function() {
         this.object.destroy();
     },
+    "collide": function() {
+        this.destroy();
+        GameCollision.remove(this);
+    },
     "step": function(position) {
         this.rect.y = Math.round(position.top[0].value);
-        GameCollision.update(this);
     }
 });
 
@@ -86,11 +96,9 @@ var GameEnemy = new Class({
     "Extends": GameObject,
     "initialize": function() {
         this.parent("enemy");
+    },
+    "collide": function() {
+        this.object.destroy();
+        GameCollision.remove(this);
     }
 });
-
-// stub
-var GameCollision = {
-    add: function(){},
-    update: function(){}
-}
