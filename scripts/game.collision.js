@@ -15,10 +15,16 @@
 		for(;i<len;i++){
 			testCollision.call(this,this.objects[i],i);
 		}
+		if (this.running) {
+			var that = this;
+			timer = setTimeout(function(){
+				internalTimer.call(that);		
+			},1000/this.settings.fps);
+		}
 	};
 	
 	function testCollision(test,skip) { // skip used internally to avoid testing reundantlly
-		if(this.settings.mode == 'async' && !this.settings.running) {
+		if(this.settings.mode == 'async' && !this.running) {
 			return;
 		}
 		var offX=this.settings.offsetX,
@@ -34,19 +40,6 @@
 			if (!curr || test == curr || (skip && skip > i)) {
 				continue;
 			}
-// function CheckCollision(x1, y1, x2, y2: integer): boolean;
-// const
-//   OFFSET_X = 4;
-//   OFFSET_Y = 4;
-// begin
-//   Result := True;
-// 
-//   if (y1 + PLAYER_HEIGHT - (OFFSET_Y * 2) < y2 + OFFSET_Y) or
-//      (y1 + OFFSET_Y > y2 + ENEMY_HEIGHT - (OFFSET_Y * 2)) or
-//      (x1 + PLAYER_WIDTH - (OFFSET_X * 2) < x2 + OFFSET_X) or
-//      (x1 + OFFSET_X > x2 + ENEMY_WIDTH - (OFFSET_X * 2)) then
-//       Result := False;
-// end;
 			if (
 				(test.rect.y + test.rect.h - (offY * 2) < curr.rect.y + offY) ||
 				(test.rect.y + offY > curr.rect.y + curr.rect.h - (offY * 2)) ||
@@ -60,7 +53,10 @@
 					this.settings.globalEvent.call(window,test,curr);
 				}
 				if(typeof test[this.settings.objectEvent] == "function") {
-					test[this.settings.objectEvent].call(test,curr);
+					test[this.settings.objectEvent].call(this,curr);
+				}
+				if(typeof curr[this.settings.objectEvent] == "function") {
+					curr[this.settings.objectEvent].call(this,curr);
 				}
 			}
 		}
@@ -127,10 +123,7 @@
 		start:function() {
 			if(this.settings.mode == 'async') {
 				this.running = true;
-				var that = this;
-				timer = setTimeout(function(){
-					internalTimer.call(that);
-				},1000/this.settings.fps);
+				internalTimer.call(this);
 			} else {
 				throw "GameCollision.start() is for use with async mode";
 			}
