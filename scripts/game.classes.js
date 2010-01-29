@@ -85,13 +85,20 @@ var GameShot = new Class({
 
 var GameEnemy = new Class({
     "Extends": GameObject,
-    "initialize": function() {
-        this.parent("enemy");
+    "initialize": function(options) {
+        this.parent("enemy", options);
     },
     "destroy": function() {
         GameCollision.remove(this);
+        this.object.destroy();
     },
     "collide": function() {
-        this.object.destroy();
+        this.destroy();
+        new GameEnemy({
+            "styles": {
+                "background": "yellow",
+                "left": this.rect.x + 34
+            }
+        });
     }
 });

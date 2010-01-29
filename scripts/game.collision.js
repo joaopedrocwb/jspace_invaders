@@ -37,7 +37,7 @@
 		for(;i<len;i++){
 			if(count>100) {return}; // debug infinite loop protection
 			curr = this.objects[i];
-			if (!curr || test == curr || (skip && skip > i)) {
+			if (!curr || !test || test == curr || (skip && skip > i)) {
 				continue;
 			}
 			if (
