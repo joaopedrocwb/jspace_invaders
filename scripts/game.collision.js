@@ -4,7 +4,7 @@
 	var settings = {
 		offsetY : 0,
 		offsetX : 0
-	}
+	};
 	
 	function testCollision(test) {
 		// console.info(this.objects)
@@ -34,13 +34,18 @@
 		return obj.rect && typeof obj.rect.x == 'number' && typeof obj.rect.y == 'number' && typeof obj.rect.h == 'number' && typeof obj.rect.w == 'number';
 	};
 	
-	function GameCollision() {
+	function GameCollision(settings) {
+		// settings = {
+		// 	objectEvent:false,
+		// 	globalEvent:
+		// };
 		// avoid problems when not called preceeded by `new`
 		if(!this.add) {
 			return new GameCollision();
 		}
 		this.objects = [];
 		this.timestamp = ''+(new Date()).getTime();
+		this.running = false;
 		return this;
 	};
 	
@@ -59,7 +64,11 @@
 		remove: function(obj){},
 		update: function(obj){
 			
-		}
+		},
+		start:function() {
+			
+		},
+		stop:function(){}
 	};
 	
 	// export public constructor
