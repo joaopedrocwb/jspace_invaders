@@ -4,11 +4,12 @@ var GameObject = new Class({
             "class": type
         });
         this.object.inject("stage");
-        GameCollision.add(this.position());
+        this.rect = this.position();
+        GameCollision.add(this);
     },
     "position": function() {
         var rect = this.object.getCoordinates("stage");
-        return this.rect = {
+        return {
             "h": rect.height,
             "w": rect.width,
             "x": rect.left,
@@ -21,16 +22,14 @@ var GamePlayer = new Class({
     "Extends": GameObject,
     "initialize": function() {
         this.parent("player");
-        
-        // bind the onKeyDown event to this.respondToKey
         document.addEvent("keydown", this.respondToKey.bind(this));
     },
     "move": function(direction) {
         var position = this.rect.x + direction * 34;
         if(this.canMoveTo(position)) {
-            GameCollision.update(this.rect);
             this.rect.x = position;
             this.object.setStyle("left", this.rect.x + "px");
+            GameCollision.update(this);
         }
     },
     "canMoveTo": function(position) {
@@ -79,7 +78,7 @@ var GameShot = new Class({
     },
     "step": function(position) {
         this.rect.y = Math.round(position.top[0].value);
-        GameCollision.update(this.rect);
+        GameCollision.update(this);
     }
 });
 
