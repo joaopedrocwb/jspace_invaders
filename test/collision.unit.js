@@ -31,4 +31,8 @@ test("add/remove objects in sync mode",function(){
 	// 	ok(false,'colided before start');
 	// }
 	collision_a.update(ob2);
+	
+	ob2.rect.x = 21; ob2.rect.y = 21;
+	
+	collision_a.update(ob2); // must not collide
 });

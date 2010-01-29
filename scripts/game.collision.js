@@ -34,11 +34,24 @@
 			if (!curr || test == curr || (skip && skip > i)) {
 				continue;
 			}
+// function CheckCollision(x1, y1, x2, y2: integer): boolean;
+// const
+//   OFFSET_X = 4;
+//   OFFSET_Y = 4;
+// begin
+//   Result := True;
+// 
+//   if (y1 + PLAYER_HEIGHT - (OFFSET_Y * 2) < y2 + OFFSET_Y) or
+//      (y1 + OFFSET_Y > y2 + ENEMY_HEIGHT - (OFFSET_Y * 2)) or
+//      (x1 + PLAYER_WIDTH - (OFFSET_X * 2) < x2 + OFFSET_X) or
+//      (x1 + OFFSET_X > x2 + ENEMY_WIDTH - (OFFSET_X * 2)) then
+//       Result := False;
+// end;
 			if (
-				(test.y + test.h - (offY * 2) < curr.y + offY) ||
-				(test.y + offY > curr.y + curr.h - (offY * 2)) ||
-				(test.x + test.w - (offX * 2) < curr.x + offX) ||
-				(test.x + offX > curr.x + curr.w - (offX * 2))
+				(test.rect.y + test.rect.h - (offY * 2) < curr.rect.y + offY) ||
+				(test.rect.y + offY > curr.rect.y + curr.rect.h - (offY * 2)) ||
+				(test.rect.x + test.rect.w - (offX * 2) < curr.rect.x + offX) ||
+				(test.rect.x + offX > curr.rect.x + curr.rect.w - (offX * 2))
 				) {
 				collided = false;
 			} else {
