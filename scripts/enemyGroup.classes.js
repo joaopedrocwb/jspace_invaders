@@ -4,12 +4,11 @@ var EnemyGroup = new Class({
 		this.totalEnemys = cols*rows;
 		this.goto = 'right';
 		this.stageWidth = 674;
+		this.enemyWidth = 34;
 		
 		this.setPosition(cols, rows, distance);
 		
-		this.speed = 1000 * Math.cos(stage);
-		
-		alert(this.speed);
+		this.speed = 1000 / stage;
 		
 		/*var that = this;
 		setTimeout(function()
@@ -53,6 +52,11 @@ var EnemyGroup = new Class({
 		this.totalEnemys--;
 	},
 	
+	"checkTotalEnemys" : function()
+	{
+		if(this.totalEnemys <= 0) this.destroy();
+	},
+	
 	"destroy": function()
 	{
 		this.object.destroy();
@@ -60,7 +64,7 @@ var EnemyGroup = new Class({
 	
 	"setPosition": function(cols, rows, distance)
 	{
-		var dif = distance - 30;
+		var dif = distance - this.enemyWidth;
 		
 		this.objWidth = cols * distance - dif;
 		this.objHeight = rows * distance - dif;
@@ -77,14 +81,16 @@ var EnemyGroup = new Class({
 		
 	"move": function()
 	{
-		if(this.goto = "right")
+		this.checkTotalEnemys();
+		
+		if(this.goto == "right")
 		{
-			this.top += 3;
+			this.top += 2;
 			this.left += 10;
 		}
 		else
 		{
-			this.top -= 3;
+			this.top += 2;
 			this.left -= 10;
 		}
 		
@@ -94,9 +100,9 @@ var EnemyGroup = new Class({
 			this.goto = "right";
 		}
 		
-		if(this.left >= this.stageWidth - this.objWidth)
+		if(this.left >= this.stageWidth - this.objWidth - this.enemyWidth)
 		{
-			this.left = this.stageWidth - this.objWidth;
+			this.left = this.stageWidth - this.objWidth - this.enemyWidth;
 			this.goto = "left";
 		}
 		
