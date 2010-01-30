@@ -2,18 +2,15 @@ var EnemyGroup = new Class({
     "initialize": function() {
 		this.create();
     },
-    /*"position": function() {
+    "position": function() {
         var rect = this.object.getCoordinates("stage");
         return {
             "x": rect.left,
             "y": rect.top
         };
-    },*/
-	"create": function() {
+    },
+	"create": function(cols, rows, distance) {
 		this.object = new Element("div", {});
-		
-		var cols = 8;
-		var rows = 3;
 		
 		for(top=0; rows > top; top++) {
 			for(left=0; cols > left; left++) {
@@ -21,8 +18,8 @@ var EnemyGroup = new Class({
 				var enemy = new GameEnemy({
 					"styles": {
 						"background": "yellow",
-						"left": left * 34,
-						"top": top * 34
+						"left": left * distance,
+						"top": top * distance
 					}
 				}, this.object);
 			}
