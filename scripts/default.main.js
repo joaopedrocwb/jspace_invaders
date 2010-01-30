@@ -13,5 +13,6 @@ GameCollision.start();
 
 window.addEvent("domready", function() {
     player = new GamePlayer();
-    enemyGroup = new EnemyGroup(8, 3, 36);
+    
+	stage = new GameStages();
 });

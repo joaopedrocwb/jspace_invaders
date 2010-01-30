@@ -20,11 +20,11 @@ var EnemyGroup = new Class({
 				
 				var enemy = new GameEnemy({
 					"styles": {
-						"background": "yellow",
 						"left": left * distance,
 						"top": top * distance
 					},
-					"id": "enemy-" + left + "-" + top
+					"id": "enemy-" + left + "-" + top,
+					"class": "enemy"
 				}, this.object);
 			}
 		}
