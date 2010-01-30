@@ -2,10 +2,6 @@ var player;
 var enemyGroup;
 var GameCollision = new GameCollision({
     objectEvent: "collide",
-    //globalEvent: function() {
-    //    GameCollision.stop();
-    //    console.log("dadsf adsf");
-    //},
     mode: "async",
     fps: 30
 });
