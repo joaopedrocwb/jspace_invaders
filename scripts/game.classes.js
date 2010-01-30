@@ -23,7 +23,11 @@ var GamePlayer = new Class({
     "Extends": GameObject,
     "direction": 0,
     "initialize": function() {
-        this.parent("player");
+        this.parent("player", {
+            "styles": {
+                "left": 306
+            }
+        });
         document.addEvent("keydown", this.keyDown.bind(this));
         document.addEvent("keyup", this.keyUp.bind(this));
     },
@@ -108,6 +112,6 @@ var GameEnemy = new Class({
     },
     "collide": function() {
         this.destroy();
-        EnemyGroup.remove();
+        enemyGroup.remove();
     }
 });
