@@ -48,3 +48,7 @@ body {
     width: 3px;
     z-index: 0;
 }
+
+.group {
+    position: absolute;
+}

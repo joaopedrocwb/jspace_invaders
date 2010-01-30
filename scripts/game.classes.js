@@ -95,11 +95,5 @@ var GameEnemy = new Class({
     },
     "collide": function() {
         this.destroy();
-        new GameEnemy({
-            "styles": {
-                "background": "yellow",
-                "left": this.rect.x + 34
-            }
-        });
     }
 });
