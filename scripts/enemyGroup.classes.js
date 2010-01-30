@@ -1,6 +1,7 @@
 var EnemyGroup = new Class({
     "initialize": function(cols, rows, distance) {
 		this.create(cols, rows, distance);
+		this.totalEnemys = cols*rows;
     },
     "position": function() {
         var rect = this.object.getCoordinates("stage");
@@ -28,6 +29,9 @@ var EnemyGroup = new Class({
 				}, this.object);
 			}
 		}
-		
+	},
+	"remove": function()
+	{
+		this.totalEnemys--;
 	}
 });
