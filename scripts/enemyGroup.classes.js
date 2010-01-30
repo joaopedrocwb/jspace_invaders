@@ -3,6 +3,7 @@ var EnemyGroup = new Class({
 		this.create(cols, rows, distance);
 		this.totalEnemys = cols*rows;
     },
+    
     "position": function() {
         var rect = this.object.getCoordinates("stage");
         return {
@@ -10,6 +11,7 @@ var EnemyGroup = new Class({
             "y": rect.top
         };
     },
+    
 	"create": function(cols, rows, distance) {
 		this.object = new Element("div", {
 			"class": "group"
@@ -30,8 +32,14 @@ var EnemyGroup = new Class({
 			}
 		}
 	},
+	
 	"remove": function()
 	{
 		this.totalEnemys--;
+	},
+	
+	"destroy": function()
+	{
+		this.object.destroy();
 	}
 });
