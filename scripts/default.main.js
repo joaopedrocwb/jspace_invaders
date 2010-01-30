@@ -1,5 +1,5 @@
 var player;
-var enemy;
+var enemyGroup;
 var GameCollision = new GameCollision({
     objectEvent: "collide",
     //globalEvent: function() {

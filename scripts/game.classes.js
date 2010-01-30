@@ -108,5 +108,6 @@ var GameEnemy = new Class({
     },
     "collide": function() {
         this.destroy();
+        EnemyGroup.remove();
     }
 });
