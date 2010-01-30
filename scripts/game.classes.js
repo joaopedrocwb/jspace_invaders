@@ -1,9 +1,10 @@
 var GameObject = new Class({
-    "initialize": function(type, options) {
+    "initialize": function(type, options, parent) {
         options = options || {};
+        parent = parent || "stage";
         options.class = type;
         this.object = new Element("div", options);
-        this.object.inject("stage");
+        this.object.inject(parent);
         this.rect = this.position();
         GameCollision.add(this);
     },
@@ -85,8 +86,8 @@ var GameShot = new Class({
 
 var GameEnemy = new Class({
     "Extends": GameObject,
-    "initialize": function(options) {
-        this.parent("enemy", options);
+    "initialize": function(options, parent) {
+        this.parent("enemy", options, parent);
     },
     "destroy": function() {
         GameCollision.remove(this);
