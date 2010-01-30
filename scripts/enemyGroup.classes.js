@@ -10,11 +10,14 @@ var EnemyGroup = new Class({
         };
     },*/
 	"create": function() {
-		this.object = new Element("div", {});
+		this.object = new Element("div", {
+			"class": "group"
+		});
+        this.object.inject("stage");
 		
 		var cols = 8;
 		var rows = 3;
-		
+
 		for(top=0; rows > top; top++) {
 			for(left=0; cols > left; left++) {
 				
@@ -23,11 +26,11 @@ var EnemyGroup = new Class({
 						"background": "yellow",
 						"left": left * 34,
 						"top": top * 34
-					}
+					},
+					"id": "enemy-" + left + "-" + top
 				}, this.object);
 			}
 		}
 		
-        this.object.inject("stage");
 	}
 });
