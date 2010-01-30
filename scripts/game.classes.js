@@ -21,12 +21,14 @@ var GameObject = new Class({
 
 var GamePlayer = new Class({
     "Extends": GameObject,
+    "direction": 0,
     "initialize": function() {
         this.parent("player");
-        document.addEvent("keydown", this.respondToKey.bind(this));
+        document.addEvent("keydown", this.keyDown.bind(this));
+        document.addEvent("keyup", this.keyUp.bind(this));
     },
     "move": function(direction) {
-        var position = this.rect.x + direction * 34;
+        var position = this.rect.x + this.direction * 10;
         if(this.canMoveTo(position)) {
             this.rect.x = position;
             this.object.setStyle("left", this.rect.x + "px");
@@ -41,14 +43,25 @@ var GamePlayer = new Class({
             "left": this.rect.x + 13
         }).fire("top");
     },
-    "respondToKey": function(e) {
+    "keyDown": function(e) {
         switch(e.key) {
             case "left":
-                return this.move(-1);
+                if(this.direction == 0) this.interval = setInterval(this.move.bind(this), 50);
+                return this.direction = -1;
             case "right":
-                return this.move(1);
+                if(this.direction == 0) this.interval = setInterval(this.move.bind(this), 50);
+                return this.direction = 1;
             case "space":
                 return this.fire();
+        }
+        return true;
+    },
+    "keyUp": function(e) {
+        switch(e.key) {
+            case "left":
+            case "right":
+                this.direction = 0;
+                clearInterval(this.interval);
         }
         return true;
     }
